@@ -19,9 +19,13 @@ TODO: how to deploy the project
 ## Authors
 
 James Verschleiser
+
 Raymond Chen
+
 Nina Paripovic
+
 Austin Zhang
+
 Ruiheng "Eddie" Ma
 
 ## Acknowledgments
