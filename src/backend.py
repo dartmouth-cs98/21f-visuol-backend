@@ -7,7 +7,7 @@ from pymongo import MongoClient
 
 load_dotenv()
 
-# MongoDB connection setup
+# MongoDB connection setup from https://www.mongodb.com/blog/post/getting-started-with-python-and-mongodb
 client = MongoClient(os.getenv('MONGO_URL'))
 db=client.admin
 # Issue the serverStatus command and print the results
