@@ -14,18 +14,21 @@ So far, we are using Python and Flask for our backend. We are planning to use Mo
 
 TODO: how to get the project dev environment up and running, npm install etc
 
-For setting up flask, first you need to have an up to date version of python and then use `pip install flask` to install flask. 
-
+1. You will need to setup a virtual environment outside of the folder: `python -m venv [env-name]`
+2. From the folder activate the virtual environment `source [env-name]/bin/activate`
+3. Navigate to the project folder where the requirements.txt file is and run `pip install -r requirements.txt`
 
 ## Deployment
 
 TODO: how to deploy the project
 
-Run the following in `src/` directory:
+After completing setup, 
 
-`export FLASK_APP=backend`
+1. `cd src/`
 
-`flask run`
+2. `export FLASK_APP=backend`
+
+3. `flask run`
 
 ## Authors
 
@@ -40,3 +43,4 @@ Austin Zhang
 Ruiheng "Eddie" Ma
 
 ## Acknowledgments
+Tim Tregubov
