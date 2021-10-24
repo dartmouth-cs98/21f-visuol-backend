@@ -4,7 +4,7 @@
 
 import controllers
 
-#Credit to https://pythonbasics.org/flask-tutorial-hello-world/ prints hello world
+# Credit to https://pythonbasics.org/flask-tutorial-hello-world/ prints hello world
 from flask import Flask
 from flask import request
 from dotenv import load_dotenv

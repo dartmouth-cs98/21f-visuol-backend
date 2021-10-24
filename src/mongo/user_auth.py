@@ -20,6 +20,7 @@ def add_user(user):
     assert user != None, 'No User Found!'
     assert user['email'] != None, 'No email found!'
     assert user['password'] != None, 'No password found!'
+    assert user['name'] != None, 'No name found!'
     
     # verify that the user doesn't already exist
     if auth_col.find_one('') != None:

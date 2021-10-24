@@ -22,6 +22,11 @@ def register_user(user_data):
     # new registered users are unverified by default
     user['is_verified'] = False
 
+    # company is None if the user is not affiliated with a company
+    user['company'] = user_data['company']
+
+    user['name'] = user_data['name']
+
     # have a session field but keep this none for now
     # by default when registering we're not handing out a session token
     # should be done in a different call
