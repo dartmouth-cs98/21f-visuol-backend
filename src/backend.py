@@ -7,6 +7,7 @@ import controllers
 # Credit to https://pythonbasics.org/flask-tutorial-hello-world/ prints hello world
 from flask import Flask
 from flask import request
+from flask_cors import CORS
 from dotenv import load_dotenv
 
 from utils.auth_middleware import auth_middleware
@@ -15,6 +16,7 @@ load_dotenv()
 
 # Flask setup
 app = Flask(__name__)
+CORS(app)
 app.wsgi_app = auth_middleware(app.wsgi_app)
 
 @app.route('/')
