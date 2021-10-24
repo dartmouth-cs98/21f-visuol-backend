@@ -6,8 +6,7 @@ load_dotenv()
 from pymongo import MongoClient
 client = MongoClient(os.getenv('MONGODB_URL'))
 
-print(os.getenv('MONGODB_URL'))
-
+# MongoDB connection setup from https://www.mongodb.com/blog/post/getting-started-with-python-and-mongodb
 db = client.VisuOL
 auth_col = db['user_authentication']
 

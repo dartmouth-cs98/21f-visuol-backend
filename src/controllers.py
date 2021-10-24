@@ -1,4 +1,5 @@
 # the controllers file handles all of the validation and data manipulation in the API
+import os
 
 from utils.hash_password import get_hashed_password, check_password
 from mongo.user_auth import add_user, get_user
@@ -49,20 +50,20 @@ def login(user_data):
     user = get_user(email)
     if user == None:
         return {
-            'status', 'failure',
-            'error', 'Could not find user for email {}'.format(email)
+            'status': 'failure',
+            'error': 'Could not find user for email {}'.format(email)
         }
 
     if not check_password(password, user['password']):
         return {
-            'status', 'failure',
-            'error', 'Incorrect password'
+            'status': 'failure',
+            'error': 'Incorrect password'
         }
 
     # expiration is in seconds, token duration in hours
-    session_token = encode({'email': email, 'expiration': time() + (TOKEN_DURATION * 60)}, "secret", algorithm="HS256")
+    session_token = encode({'email': email, 'expiration': time() + (TOKEN_DURATION * 360)}, os.getenv('JWT_SECRET_KEY'), algorithm="HS256")
     return {
-        'status', 'success',
-        'session_token', session_token
+        'status': 'success',
+        'session_token': session_token
     }
 
