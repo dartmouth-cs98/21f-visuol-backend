@@ -33,6 +33,14 @@ def index():
 def register_user():
     return controllers.register_user(request.json)
 
+@app.route('/api_v1/login', methods=['POST'])
+def login():
+    return controllers.login(request.json)
+
+@app.route('/api_v1/authtest', methods=['POST'])
+def authtest():
+    return {'status': 'success'}
+
 
 app.run(host='0.0.0.0', port=81)# Flask setup
 app = Flask(__name__)

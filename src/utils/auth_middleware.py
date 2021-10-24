@@ -12,6 +12,7 @@ from werkzeug.wrappers import Request, Response, ResponseStream
 from flask import jsonify
 import jwt
 import os
+from time import time
 
 # from https://medium.com/swlh/creating-middlewares-with-python-flask-166bd03f2fd4
 class middleware():
@@ -20,7 +21,7 @@ class middleware():
         
         
         # decode session token
-        auth_header = request.authorization()
+        auth_header = request.authorization
         
         valid_header = True
         if auth_header == None:
@@ -38,33 +39,27 @@ class middleware():
         session_token = tokens[1]
 
         try:
-            identity = jwt.decode(session_token, os.getenv('JWT_SECRET_KEY'), algorithms=['HS256'])
+            session_data = jwt.decode(session_token, os.getenv('JWT_SECRET_KEY'), algorithms=['HS256'])
         except jwt.DecodeError:
             valid_header = False
             message = 'Could not decode jwt token.'
-        
-#         >>> import jwt
-# >>> encoded_jwt = jwt.encode({"some": "payload"}, "secret", algorithm="HS256")
-# >>> print(encoded_jwt)
-# eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzb21lIjoicGF5bG9hZCJ9.Joh1R2dYzkRvDkqv3sygm5YyK8Gi4ShZqbhK2gxcs2U
-# >>> jwt.decode(encoded_jwt, "secret", algorithms=["HS256"])
-# {'some': 'payload'}
 
+        # session has expired
+        if session_data['expiration'] < time():
+            valid_header = False
+            message = 'Header has expired please reauthenticate.'
         
+        if not valid_header:
+            res = Response(response=jsonify({
+                        'status: error'
+                        'message': message
+                    }),
+                    status=401,
+                    mimetype='application/json')
+            return res
 
-        res = Response(response=jsonify({
-                    'status: error'
-                    'message': message
-                }),
-                status=401,
-                mimetype='application/json')
-
-        print('auth header', auth_header)
+        print('session data', session_data)
         
+        environ['user'] = { 'email': session_data['email'] }
         
-        if userName == self.userName and password == self.password:
-            environ['user'] = { 'name': 'Tony' }
-            return self.app(environ, start_response)
-
-        res = Response(u'Authorization failed', mimetype= 'text/plain', status=401)
-        return res(environ, start_response)
+        return self.app(environ, start_response)

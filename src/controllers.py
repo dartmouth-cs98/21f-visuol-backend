@@ -2,6 +2,9 @@
 
 from utils.hash_password import get_hashed_password, check_password
 from mongo.user_auth import add_user, get_user
+from jwt import encode
+from time import time
+from constants import TOKEN_DURATION
 
 def register_user(user_data):
     assert 'email' in user_data, 'Could not find email in user!'
@@ -55,10 +58,11 @@ def login(user_data):
             'status', 'failure',
             'error', 'Incorrect password'
         }
-    
 
+    # expiration is in seconds, token duration in hours
+    session_token = encode({'email': email, 'expiration': time() + (TOKEN_DURATION * 60)}, "secret", algorithm="HS256")
     return {
         'status', 'success',
-        'session_token', 'samplesessiontoken'
+        'session_token', session_token
     }
 
