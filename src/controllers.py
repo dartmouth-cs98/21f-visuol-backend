@@ -65,10 +65,13 @@ def login(user_data):
             'error': 'Incorrect password'
         }
 
-    # expiration is in seconds, token duration in hours
-    session_token = encode({'email': email, 'expiration': time() + (TOKEN_DURATION * 360)}, os.getenv('JWT_SECRET_KEY'), algorithm="HS256")
+    # expiration is in seconds from epoch, token duration in hours
+    expiration = time() + (TOKEN_DURATION * 360)
+    session_token = encode({'email': email, 'expiration': expiration}, os.getenv('JWT_SECRET_KEY'), algorithm="HS256")
+
     return {
         'status': 'success',
-        'session_token': session_token
+        'session_token':  'Bearer {}'.format(session_token),
+        'expiration': expiration
     }
 
