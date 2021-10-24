@@ -1,0 +1,53 @@
+every request except for register and login needs
+Authorization header, format is Bearer session_token
+
+ROUTE
+/api_v1/register_user
+
+method: POST
+
+mimetype/data format: json
+
+body: 
+{
+    email: [String]
+    password: [String]
+}
+
+RESPONSES
+{
+    status: failure
+    error: error_message
+}
+
+{
+    status: success
+}
+
+
+ROUTE
+/api_v1/login
+
+method: POST
+
+mimetype/data format: json
+
+body: 
+{
+    email: [String]
+    password: [String]
+}
+
+RESPONSES
+{
+    status: failure
+    error: error_message
+}
+
+{
+    status: success,
+    session_token: exampletoken
+}
+
+Need to store the session_token for use with each subsequent request.
+May implement token timeout in the future
