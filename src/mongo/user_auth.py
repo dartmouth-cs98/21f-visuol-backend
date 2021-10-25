@@ -23,7 +23,7 @@ def add_user(user):
     assert user['name'] != None, 'No name found!'
     
     # verify that the user doesn't already exist
-    if auth_col.find_one('') != None:
+    if auth_col.find_one(user['email']) != None:
         return 'Email for user {} already exists!'.format(user['email'])
     auth_col.insert_one(user)
     return None
