@@ -41,9 +41,9 @@ def authtest():
 def create_offer():
     return controllers.create_offer(request.json)
 
-@app.route('/api_v1/fetch_offer/<offer_id>', methods=['GET'])
-def fetch_offer(offer_id):
-    return controllers.find_offer(offer_id)
+@app.route('/api_v1/fetch_offer', methods=['GET'])
+def fetch_offer():
+    return controllers.find_offer(request.json)
 
 
 app.run(host='0.0.0.0', port=5000) # Flask setup

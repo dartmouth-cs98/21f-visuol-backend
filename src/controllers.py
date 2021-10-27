@@ -7,6 +7,9 @@ from mongo.offer import add_offer, get_offer
 from jwt import encode
 from time import time
 from constants import TOKEN_DURATION
+from bson import json_util
+import json
+
 
 def register_user(user_data):
     assert 'email' in user_data, 'Could not find email in user!'
@@ -115,10 +118,10 @@ def find_offer(offer_data):
             'error': 'Could not find offer for id {}'.format(offer_id)
         }
 
-    if offer_id['company'] != company:
+    if offer['company'] != company:
         return {
             'status': 'failure',
             'error': 'Offer does not match company'
         }
 
-    return offer
+    return json.loads(json_util.dumps(offer))
