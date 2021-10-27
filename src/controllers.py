@@ -32,7 +32,7 @@ def register_user(user_data):
     # by default when registering we're not handing out a session token
     # should be done in a different call
     user['session'] = None
-
+    
     resp = add_user(user)
 
     # we threw an error, return it

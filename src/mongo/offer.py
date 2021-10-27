@@ -27,11 +27,11 @@ def get_offer(offer_id):
 
 if __name__ == '__main__':
     add_offer({
-        'company': 'Google',
-        'date': '02/07/21',
-        'expiration': '02/21/21',
-        'base': 100000,
-        'bonus': 15000,
-        '401k': 10.0,
-        'PTO': 15
+        "company": "Google",
+        "date": "02/07/21",
+        "expiration": "02/21/21",
+        "base": 100000,
+        "bonus": 15000,
+        "401k": 10.0,
+        "PTO": 15
     })
