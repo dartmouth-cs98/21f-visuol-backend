@@ -37,13 +37,29 @@ def login():
 def authtest():
     return {'status': 'success'}
 
+# Used to place a new offer in the database
+# expects all the information that might be present in a job offer
 @app.route('/api_v1/create_offer', methods=['POST'])
 def create_offer():
     return controllers.create_offer(request.json)
 
+# Used to search for a job offer
+# expects an id and a company name
 @app.route('/api_v1/fetch_offer', methods=['GET'])
 def fetch_offer():
     return controllers.find_offer(request.json)
+
+# Retrieves a list of all the offers that a user has
+# takes a user's id
+# returns a list off all the offer id's and the company names
+@app.route('/api_v1/users_offers', methods=['GET'])
+def users_offers():
+    return controllers.users_offers(request.json)
+
+# Allows users to edit an offer
+@app.route('api_v1/edit_offer', methods=['PUT'])
+def edit_offer(offer_data):
+    return controllers.edit_offer(request.json)
 
 
 app.run(host='0.0.0.0', port=5000) # Flask setup

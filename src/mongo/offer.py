@@ -13,18 +13,30 @@ db = client.VisuOL
 col = db['offers']
 
 
-# Adds a user to the user_authentication table
-# Users are a dictionary with the following fields
-# email (required), password (required), session_token (nullable), is_verified (required)
+# Adds an offer to the offer table
+# Offers are a dictionary with all the standard things found in typical offer letters
 def add_offer(offer):
     col.insert_one(offer)
     return None
 
 
+# Retrieves a specific offer from the table
 def get_offer(offer_id):
     assert offer_id is not None, "no id given!"
 
     return col.find_one({'_id': ObjectId(offer_id)})
+
+
+# Retrieves all the offers that a user has
+# Takes in the id of a user
+def get_offers(user_id):
+    assert user_id is not None, "no id given!"
+
+    return col.find({'user_id': user_id})
+
+# Updates a specific offer
+def update_offer(offer_id, body):
+    return col.update_one({'_id': ObjectId(offer_id)}, body)
 
 
 if __name__ == '__main__':
