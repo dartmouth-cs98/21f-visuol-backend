@@ -3,9 +3,13 @@ import os
 
 from utils.hash_password import get_hashed_password, check_password
 from mongo.user_auth import add_user, get_user
+from mongo.offer import add_offer, get_offer
 from jwt import encode
 from time import time
 from constants import TOKEN_DURATION
+from bson import json_util
+import json
+
 
 def register_user(user_data):
     assert 'email' in user_data, 'Could not find email in user!'
@@ -31,7 +35,7 @@ def register_user(user_data):
     # by default when registering we're not handing out a session token
     # should be done in a different call
     user['session'] = None
-
+    
     resp = add_user(user)
 
     # we threw an error, return it
@@ -75,3 +79,49 @@ def login(user_data):
         'expiration': expiration
     }
 
+def create_offer(offer_data):
+    offer = {}
+
+    offer['company'] = offer_data['company']
+    offer['date'] = offer_data['date']
+    offer['expiration'] = offer_data['expiration']
+    offer['base'] = offer_data['base']
+    offer['bonus'] = offer_data['bonus']
+    offer['401K'] = offer_data['401K']
+    offer['PTO'] = offer_data['PTO']
+
+    resp = add_offer(offer)
+
+    # we threw an error, return it
+    if resp != None:
+        return {
+            'status': 'failure',
+            'error': resp
+        }
+
+    return {
+        'status': 'success'
+    }
+
+def find_offer(offer_data):
+    assert offer_data['id'] != None, "id needed."
+    assert offer_data['company'] != None, "company name needed."
+
+    company = offer_data['company']
+    offer_id = offer_data['id']
+
+    offer = get_offer(offer_id)
+
+    if offer is None:
+        return {
+            'status': 'failure',
+            'error': 'Could not find offer for id {}'.format(offer_id)
+        }
+
+    if offer['company'] != company:
+        return {
+            'status': 'failure',
+            'error': 'Offer does not match company'
+        }
+
+    return json.loads(json_util.dumps(offer))

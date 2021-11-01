@@ -37,6 +37,14 @@ def login():
 def authtest():
     return {'status': 'success'}
 
+@app.route('/api_v1/create_offer', methods=['POST'])
+def create_offer():
+    return controllers.create_offer(request.json)
+
+@app.route('/api_v1/fetch_offer', methods=['GET'])
+def fetch_offer():
+    return controllers.find_offer(request.json)
+
 
 app.run(host='0.0.0.0', port=5000) # Flask setup
 app = Flask(__name__)
