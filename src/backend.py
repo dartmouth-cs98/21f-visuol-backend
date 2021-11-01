@@ -57,7 +57,7 @@ def users_offers():
     return controllers.users_offers(request.json)
 
 # Allows users to edit an offer
-@app.route('api_v1/edit_offer', methods=['PUT'])
+@app.route('/api_v1/edit_offer', methods=['PUT'])
 def edit_offer(offer_data):
     return controllers.edit_offer(request.json)
 

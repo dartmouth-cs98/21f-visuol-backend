@@ -32,7 +32,7 @@ def get_offer(offer_id):
 def get_offers(user_id):
     assert user_id is not None, "no id given!"
 
-    return col.find({'user_id': user_id})
+    return list(col.find({'user_id': user_id}))
 
 # Updates a specific offer
 def update_offer(offer_id, body):

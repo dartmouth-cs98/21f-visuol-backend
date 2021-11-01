@@ -130,8 +130,10 @@ def find_offer(offer_data):
             'status': 'failure',
             'error': 'Offer does not match company'
         }
+    
+    offer['_id'] = str(offer['_id'])
 
-    return json.loads(json_util.dumps(offer))
+    return offer
 
 # method used to return a list off all the offer ids and company names for a specific user
 def users_offers(user_data):
@@ -140,14 +142,17 @@ def users_offers(user_data):
     user_id = user_data['id']
 
     offers = get_offers(user_id)
-
+    print(offers)
     if offers is None:
         return {
             'status': 'failure',
             'error': 'Could not find offers for id {}'.format(user_id)
         }
 
-    return json.loads(json_util.dumps(offers))
+    for offer in offers:
+        offer['_id'] = str(offer['_id'])
+
+    return json.dumps(offers)
 
 # method to edit an already existing offer in the database
 # requires the id of the offer to edit and the fields to edit
