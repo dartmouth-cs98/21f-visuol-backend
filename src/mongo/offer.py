@@ -29,10 +29,10 @@ def get_offer(offer_id):
 
 # Retrieves all the offers that a user has
 # Takes in the id of a user
-def get_offers(user_id):
-    assert user_id is not None, "no id given!"
+def get_offers(user):
+    assert user is not None, "no user given!"
 
-    return list(col.find({'user_id': user_id}))
+    return list(col.find({'user': user}))
 
 # Updates a specific offer
 def update_offer(offer_id, body):

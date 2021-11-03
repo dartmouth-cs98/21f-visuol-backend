@@ -41,7 +41,9 @@ def authtest():
 # expects all the information that might be present in a job offer
 @app.route('/api_v1/create_offer', methods=['POST'])
 def create_offer():
-    return controllers.create_offer(request.json)
+    user = request.environ['user']['email']
+
+    return controllers.create_offer(user, request.json)
 
 # Used to search for a job offer
 # expects an id and a company name
@@ -54,11 +56,13 @@ def fetch_offer():
 # returns a list off all the offer id's and the company names
 @app.route('/api_v1/users_offers', methods=['GET'])
 def users_offers():
-    return controllers.users_offers(request.json)
+    user = request.environ['user']['email']
+
+    return controllers.users_offers(user)
 
 # Allows users to edit an offer
 @app.route('/api_v1/edit_offer', methods=['PUT'])
-def edit_offer(offer_data):
+def edit_offer():
     return controllers.edit_offer(request.json)
 
 

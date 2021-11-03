@@ -80,10 +80,16 @@ def login(user_data):
     }
 
 # method used to place a new offer into the database
-def create_offer(offer_data):
+def create_offer(user, offer_data):
+    assert user != None, "user not given."
+
     # create a new offer and fill it with all the information from the input form
     offer = {}
 
+    # the user who the offer belongs to
+    offer['user'] = user
+
+    # the data in the offer
     offer['company'] = offer_data['company']
     offer['date'] = offer_data['date']
     offer['expiration'] = offer_data['expiration']
@@ -136,17 +142,15 @@ def find_offer(offer_data):
     return offer
 
 # method used to return a list off all the offer ids and company names for a specific user
-def users_offers(user_data):
-    assert user_data['id'] != None, "id needed."
+def users_offers(user):
+    assert user != None, "user needed"
 
-    user_id = user_data['id']
-
-    offers = get_offers(user_id)
+    offers = get_offers(user)
     print(offers)
     if offers is None:
         return {
             'status': 'failure',
-            'error': 'Could not find offers for id {}'.format(user_id)
+            'error': 'Could not find offers for user {}'.format(user)
         }
 
     for offer in offers:
