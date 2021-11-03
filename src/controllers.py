@@ -3,7 +3,7 @@ import os
 
 from utils.hash_password import get_hashed_password, check_password
 from mongo.user_auth import add_user, get_user
-from mongo.offer import add_offer, get_offer
+from mongo.offer import add_offer, get_offer, get_offers, update_offer
 from jwt import encode
 from time import time
 from constants import TOKEN_DURATION
@@ -79,7 +79,9 @@ def login(user_data):
         'expiration': expiration
     }
 
+# method used to place a new offer into the database
 def create_offer(offer_data):
+    # create a new offer and fill it with all the information from the input form
     offer = {}
 
     offer['company'] = offer_data['company']
@@ -103,25 +105,65 @@ def create_offer(offer_data):
         'status': 'success'
     }
 
+# method used to find the information for an offer using the id and the company name
 def find_offer(offer_data):
+    # make sure both the id and company values are present
     assert offer_data['id'] != None, "id needed."
     assert offer_data['company'] != None, "company name needed."
 
     company = offer_data['company']
     offer_id = offer_data['id']
 
+    # search the database for the offer
     offer = get_offer(offer_id)
 
+    # if no offer was found that matches the id
     if offer is None:
         return {
             'status': 'failure',
             'error': 'Could not find offer for id {}'.format(offer_id)
         }
 
+    # check to make sure that the offer is the one that you are looking for
     if offer['company'] != company:
         return {
             'status': 'failure',
             'error': 'Offer does not match company'
         }
+    
+    offer['_id'] = str(offer['_id'])
 
-    return json.loads(json_util.dumps(offer))
+    return offer
+
+# method used to return a list off all the offer ids and company names for a specific user
+def users_offers(user_data):
+    assert user_data['id'] != None, "id needed."
+
+    user_id = user_data['id']
+
+    offers = get_offers(user_id)
+    print(offers)
+    if offers is None:
+        return {
+            'status': 'failure',
+            'error': 'Could not find offers for id {}'.format(user_id)
+        }
+
+    for offer in offers:
+        offer['_id'] = str(offer['_id'])
+
+    return json.dumps(offers)
+
+# method to edit an already existing offer in the database
+# requires the id of the offer to edit and the fields to edit
+def edit_offer(offer_data):
+    assert offer_data['id'] != None, "id needed."
+    
+    # We want to separate the id from the rest of the fields submitted
+    offer_id = offer_data['id']
+    offer_data.remove('id')
+    
+    # body contains all the fields that we want to change
+    body = offer_data
+
+    result = update_offer(offer_id, body)
