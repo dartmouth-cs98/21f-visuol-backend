@@ -1,12 +1,7 @@
 import os
 from dotenv import load_dotenv
 from bson import ObjectId
-
-load_dotenv()
-
-import pymongo
-
-client = pymongo.MongoClient(os.getenv('MONGODB_URL'))
+from mongo.mongo_client import client
 
 # MongoDB connection setup from https://www.mongodb.com/blog/post/getting-started-with-python-and-mongodb
 db = client.VisuOL

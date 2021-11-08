@@ -5,18 +5,22 @@
 import controllers
 
 # Credit to https://pythonbasics.org/flask-tutorial-hello-world/ prints hello world
+from werkzeug.wrappers import Response
 from flask import Flask, request
 from flask_cors import CORS
 from dotenv import load_dotenv
-
-from utils.auth_middleware import auth_middleware
+from json import dumps
+import jwt
+import os
+from time import time
 
 load_dotenv()
 
 # Flask setup
 app = Flask(__name__)
 CORS(app)
-app.wsgi_app = auth_middleware(app.wsgi_app)
+# removed middleware 
+# app.wsgi_app = auth_middleware(app.wsgi_app)
 
 @app.route('/')
 def index():
@@ -35,18 +39,30 @@ def login():
 # for testing auth middleware
 @app.route('/api_v1/authtest', methods=['POST'])
 def authtest():
+    auth_header = request.headers.get('Authorization')
+    auth_result = read_authorization(auth_header)
+    if (auth_result != None):
+        return auth_result
     return {'status': 'success'}
 
 # Used to place a new offer in the database
 # expects all the information that might be present in a job offer
 @app.route('/api_v1/create_offer', methods=['POST'])
 def create_offer():
+    auth_header = request.headers.get('Authorization')
+    auth_result = read_authorization(auth_header)
+    if (auth_result != None):
+        return auth_result
     return controllers.create_offer(request.json)
 
 # Used to search for a job offer
 # expects an id and a company name
 @app.route('/api_v1/fetch_offer', methods=['GET'])
 def fetch_offer():
+    auth_header = request.headers.get('Authorization')
+    auth_result = read_authorization(auth_header)
+    if (auth_result != None):
+        return auth_result
     return controllers.find_offer(request.json)
 
 # Retrieves a list of all the offers that a user has
@@ -54,13 +70,62 @@ def fetch_offer():
 # returns a list off all the offer id's and the company names
 @app.route('/api_v1/users_offers', methods=['GET'])
 def users_offers():
+    auth_header = request.headers.get('Authorization')
+    auth_result = read_authorization(auth_header)
+    if (auth_result != None):
+        return auth_result
     return controllers.users_offers(request.json)
 
 # Allows users to edit an offer
 @app.route('/api_v1/edit_offer', methods=['PUT'])
 def edit_offer(offer_data):
+    auth_header = request.headers.get('Authorization')
+    auth_result = read_authorization(auth_header)
+    if (auth_result != None):
+        return auth_result
     return controllers.edit_offer(request.json)
 
+def read_authorization(auth_header):
+        # don't run middleware for login or register routes.
+    if request.path == '/api_v1/login' or request.path == '/api_v1/register_user':
+        return # do nothing
+
+    create_error_response = lambda message: Response(response=dumps({
+        'status': 'error',
+        'message': message
+        }),
+        status=401,
+        mimetype='application/json'
+    )
+        
+    if auth_header == None:
+        print('No header token')
+        return create_error_response('Could not find header token. Please reauthenticate and reauthorize.')
+    
+    tokens = auth_header.split()
+    if len(tokens) != 2:
+        print('Invalid token')
+        return create_error_response('Unrecognized authorization header format. Expected 2 tokens, got {}'.format(len(tokens)))
+    if tokens[0] != 'Bearer':
+        print('Invalid token')
+        return create_error_response('Unrecognized authorization header scheme, Expected Bearer, got {}'.format(tokens[0]))
+    
+    session_token = tokens[1]
+
+    try:
+        session_data = jwt.decode(session_token, os.getenv('JWT_SECRET_KEY'), algorithms=['HS256'])
+    except jwt.DecodeError:
+        print('Cannot decode token')
+        return create_error_response('Could not decode jwt token.')
+
+    # session has expired
+    if session_data['expiration'] < time():
+        print('Header expired')
+        return create_error_response('Header has expired please reauthenticate.')
+
+    print('session data', session_data)
+    
+    request.environ['user'] = { 'email': session_data['email'] }
 
 app.run(host='0.0.0.0', port=5000) # Flask setup
 app = Flask(__name__)

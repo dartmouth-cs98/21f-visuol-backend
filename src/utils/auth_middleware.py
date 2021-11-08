@@ -36,14 +36,19 @@ class auth_middleware():
         
         # decode session token
         auth_header = request.headers.get('Authorization')
+        print('headers', request.headers)
+        print('auth header', auth_header)
         
         if auth_header == None:
+            print('No header token')
             return create_error_response('Could not find header token. Please reauthenticate and reauthorize.')(environ, start_response)
         
         tokens = auth_header.split()
         if len(tokens) != 2:
+            print('Invalid token')
             return create_error_response('Unrecognized authorization header format. Expected 2 tokens, got {}'.format(len(tokens)))
         if tokens[0] != 'Bearer':
+            print('Invalid token')
             return create_error_response('Unrecognized authorization header scheme, Expected Bearer, got {}'.format(tokens[0]))
         
         session_token = tokens[1]
@@ -51,10 +56,12 @@ class auth_middleware():
         try:
             session_data = jwt.decode(session_token, os.getenv('JWT_SECRET_KEY'), algorithms=['HS256'])
         except jwt.DecodeError:
+            print('Cannot decode token')
             return create_error_response('Could not decode jwt token.')
 
         # session has expired
         if session_data['expiration'] < time():
+            print('Header expired')
             return create_error_response('Header has expired please reauthenticate.')
 
         print('session data', session_data)
