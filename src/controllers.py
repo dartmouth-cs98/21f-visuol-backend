@@ -146,7 +146,7 @@ def users_offers(user):
     assert user != None, "user needed"
 
     offers = get_offers(user)
-    print(offers)
+
     if offers is None:
         return {
             'status': 'failure',
@@ -170,4 +170,4 @@ def edit_offer(offer_data):
     # body contains all the fields that we want to change
     body = offer_data
 
-    result = update_offer(offer_id, body)
+    return update_offer(offer_id, body)
