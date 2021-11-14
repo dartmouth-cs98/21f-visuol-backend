@@ -36,6 +36,15 @@ def register_user():
 def login():
     return controllers.login(request.json)
 
+@app.route('/api_v1/state_taxes', methods=['POST'])
+def state_taxes():
+    return controllers.get_state_tax(request.json)
+
+# Returns percent of income going to fed taxes
+@app.route('/api_v1/fed_taxes', methods=['POST'])
+def fed_taxes():
+    return controllers.get_fed_tax(request.json)
+
 # for testing auth middleware
 @app.route('/api_v1/authtest', methods=['POST'])
 def authtest():
