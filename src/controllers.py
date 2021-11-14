@@ -85,11 +85,12 @@ def create_offer(offer_data):
     offer = {}
 
     offer['company'] = offer_data['company']
-    offer['date'] = offer_data['date']
+    offer['startDate'] = offer_data['startDate']
     offer['expiration'] = offer_data['expiration']
     offer['base'] = offer_data['base']
     offer['bonus'] = offer_data['bonus']
-    offer['401K'] = offer_data['401K']
+    offer['matchPercentage'] = offer_data['matchPercentage']
+    offer['stocks'] = offer_data['stocks']
     offer['PTO'] = offer_data['PTO']
 
     resp = add_offer(offer)
