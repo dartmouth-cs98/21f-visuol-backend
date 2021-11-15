@@ -129,18 +129,16 @@ def create_offer(user, offer_data):
     offer['matchPercentage'] = offer_data['matchPercentage']
     offer['stocks'] = offer_data['stocks']
     offer['PTO'] = offer_data['PTO']
-
     resp = add_offer(offer)
-
     # we threw an error, return it
-    if resp != None:
+    if resp == None:
         return {
-            'status': 'failure',
-            'error': resp
+            'status': 'failure'
         }
 
     return {
-        'status': 'success'
+        'status': 'success',
+        'id': resp
     }
 
 # method used to find the information for an offer using the id and the company name
