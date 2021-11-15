@@ -62,7 +62,8 @@ def create_offer():
     auth_result = read_authorization(auth_header)
     if (auth_result != None):
         return auth_result
-    return controllers.create_offer(request.json)
+    user = request.environ['user']['email']
+    return controllers.create_offer(user, request.json)
 
 # Used to search for a job offer
 # expects an id and a company name
