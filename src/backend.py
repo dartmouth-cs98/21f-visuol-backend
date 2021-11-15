@@ -66,12 +66,13 @@ def create_offer():
 
 # Used to search for a job offer
 # expects an id and a company name
-@app.route('/api_v1/fetch_offer', methods=['GET'])
+@app.route('/api_v1/fetch_offer', methods=['POST'])
 def fetch_offer():
     auth_header = request.headers.get('Authorization')
     auth_result = read_authorization(auth_header)
     if (auth_result != None):
         return auth_result
+    print('json from fetch request', request.json)
     return controllers.find_offer(request.json)
 
 # Retrieves a list of all the offers that a user has
