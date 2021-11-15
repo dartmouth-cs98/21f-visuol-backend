@@ -19,7 +19,7 @@ load_dotenv()
 # Flask setup
 app = Flask(__name__)
 CORS(app)
-# removed middleware 
+
 # app.wsgi_app = auth_middleware(app.wsgi_app)
 
 @app.route('/')
@@ -83,7 +83,9 @@ def users_offers():
     auth_result = read_authorization(auth_header)
     if (auth_result != None):
         return auth_result
-    return controllers.users_offers(request.json)
+    
+    user = request.environ['user']['email']
+    return controllers.users_offers(user)
 
 # Allows users to edit an offer
 @app.route('/api_v1/edit_offer', methods=['PUT'])
@@ -137,4 +139,3 @@ def read_authorization(auth_header):
     request.environ['user'] = { 'email': session_data['email'] }
 
 app.run(host='0.0.0.0', port=5000) # Flask setup
-app = Flask(__name__)
