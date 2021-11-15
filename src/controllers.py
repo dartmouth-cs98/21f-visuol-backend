@@ -1,6 +1,8 @@
 # the controllers file handles all of the validation and data manipulation in the API
 import os
 
+from numpy import string_
+
 from utils.hash_password import get_hashed_password, check_password
 from mongo.user_auth import add_user, get_user
 from mongo.offer import add_offer, get_offer, get_offers, update_offer
@@ -9,8 +11,8 @@ from time import time
 from constants import TOKEN_DURATION
 from bson import json_util
 import json
-
-
+from state_tax.state_tax import state_tax
+from federal_tax import fed_tax
 def register_user(user_data):
     assert 'email' in user_data, 'Could not find email in user!'
     assert 'password' in user_data, 'Could not find password in user!'
@@ -77,6 +79,35 @@ def login(user_data):
         'status': 'success',
         'session_token':  'Bearer {}'.format(session_token),
         'expiration': expiration
+    }
+
+def get_state_tax(user_data):
+    assert user_data != None, 'Could not find user data!'
+    assert user_data['state'] != None, 'Could not find user state!'
+    assert user_data['income'] != None, 'Could not find user income!'
+    assert user_data['married'] != None, 'Could not find user martial status!'
+
+    state = user_data['state']
+    income = user_data['income']
+    married = user_data['married']
+
+    return {
+        'status': 'success',
+        'state_tax_percent':  str(state_tax(state, income, married))
+    }
+
+def get_fed_tax(user_data):
+    assert user_data != None, 'Could not find user data!'
+    print(user_data)
+    assert user_data['income'] != None, 'Could not find user income!'
+    assert user_data['married'] != None, 'Could not find user martial status!'
+
+    income = user_data['income']
+    married = user_data['married']
+
+    return {
+        'status': 'success',
+        'fed_tax_percent':  str(fed_tax(income, married))
     }
 
 # method used to place a new offer into the database
