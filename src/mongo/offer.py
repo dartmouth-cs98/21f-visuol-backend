@@ -11,8 +11,7 @@ col = db['offers']
 # Adds an offer to the offer table
 # Offers are a dictionary with all the standard things found in typical offer letters
 def add_offer(offer):
-    col.insert_one(offer)
-    return None
+    return str(col.insert_one(offer).inserted_id)
 
 
 # Retrieves a specific offer from the table
