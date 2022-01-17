@@ -207,4 +207,4 @@ def remove_offer(offer_data):
     assert offer_data['id'] != None, "offer id is needed."
     offer_id = offer_data['id']
 
-    return delete_offer(offer_id)
+    delete_offer(offer_id)

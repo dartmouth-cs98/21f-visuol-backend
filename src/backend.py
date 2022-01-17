@@ -101,12 +101,12 @@ def edit_offer(offer_data):
 # allows users to remove offers
 @app.route('/api_v1/remove_offer', methods=['DELETE'])
 def remove_offer():
-    print("header: " + str(request.headers))
     auth_header = request.headers.get('Authorization')
     auth_result = read_authorization(auth_header)
     if (auth_result != None):
         return auth_result
-    return controllers.remove_offer(request.json)
+    controllers.remove_offer(request.json)
+    return "offer removed"
 
 def read_authorization(auth_header):
         # don't run middleware for login or register routes.

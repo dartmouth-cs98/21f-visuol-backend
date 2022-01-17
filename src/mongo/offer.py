@@ -36,7 +36,7 @@ def update_offer(offer_id, body):
 def delete_offer(offer_id):
     assert offer_id is not None, "no id given!"
 
-    return col.delete_one({'_id': ObjectId(offer_id)})
+    col.delete_one({'_id': ObjectId(offer_id)})
 
 
 
