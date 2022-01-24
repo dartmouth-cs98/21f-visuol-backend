@@ -203,9 +203,9 @@ def edit_offer(offer_data):
 
     return update_offer(offer_id, body)
 
- # method to delete an offer from the database
- def remove_offer(offer_data):
-     assert offer_data['id'] != None, "offer id is needed."
-     offer_id = offer_data['id']
+# method to delete an offer from the database
+def remove_offer(offer_data):
+    assert offer_data['id'] != None, "offer id is needed."
+    offer_id = offer_data['id']
 
-     delete_offer(offer_id)
+    delete_offer(offer_id)
