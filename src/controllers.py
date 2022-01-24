@@ -129,6 +129,7 @@ def create_offer(user, offer_data):
     offer['matchPercentage'] = offer_data['matchPercentage']
     offer['stocks'] = offer_data['stocks']
     offer['PTO'] = offer_data['PTO']
+    offer['state'] = offer_data['state']
     resp = add_offer(offer)
     # we threw an error, return it
     if resp == None:

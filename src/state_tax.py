@@ -28,5 +28,4 @@ def state_tax(state, income, married):
                             remaining_income += (income - df2.iloc[i]['Single Bracket']) * (df2.iloc[i]['Single Rate'])
                         else:
                             remaining_income += ((min(income, df2.iloc[i + 1]['Single Bracket']) - df2.iloc[i]['Single Bracket'])  * (df2.iloc[i]['Single Rate']))
-    print(remaining_income, income, married)
     return 1 - remaining_income/income
