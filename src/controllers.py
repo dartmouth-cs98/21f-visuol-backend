@@ -5,7 +5,7 @@ from numpy import string_
 
 from utils.hash_password import get_hashed_password, check_password
 from mongo.user_auth import add_user, get_user
-from mongo.offer import add_offer, get_offer, get_offers, update_offer
+from mongo.offer import add_offer, get_offer, get_offers, update_offer, delete_offer
 from jwt import encode
 from time import time
 from constants import TOKEN_DURATION
@@ -202,3 +202,10 @@ def edit_offer(offer_data):
     body = offer_data
 
     return update_offer(offer_id, body)
+
+ # method to delete an offer from the database
+ def remove_offer(offer_data):
+     assert offer_data['id'] != None, "offer id is needed."
+     offer_id = offer_data['id']
+
+     delete_offer(offer_id)

@@ -32,6 +32,12 @@ def get_offers(user):
 def update_offer(offer_id, body):
     return col.update_one({'_id': ObjectId(offer_id)}, body)
 
+# Deletes an offer from the database
+ def delete_offer(offer_id):
+     assert offer_id is not None, "no id given!"
+
+     col.delete_one({'_id': ObjectId(offer_id)})
+
 
 if __name__ == '__main__':
     add_offer({
