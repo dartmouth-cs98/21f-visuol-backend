@@ -11,7 +11,7 @@ from time import time
 from constants import TOKEN_DURATION
 from bson import json_util
 import json
-from state_tax.state_tax import state_tax
+from state_tax import state_tax
 from federal_tax import fed_tax
 def register_user(user_data):
     assert 'email' in user_data, 'Could not find email in user!'
