@@ -189,6 +189,16 @@ def users_offers(user):
 
     return json.dumps(offers)
 
+def user(email):
+    assert email != None, "user needed"
+    user = get_user(email)
+    if user == None:
+        return {
+            'status': 'failure',
+            'error': 'Could not find user for email {}'.format(email)
+        }
+    return json.loads(json_util.dumps(user))
+
 # method to edit an already existing offer in the database
 # requires the id of the offer to edit and the fields to edit
 def edit_offer(offer_data):
