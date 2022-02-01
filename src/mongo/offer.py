@@ -38,6 +38,11 @@ def delete_offer(offer_id):
 
     col.delete_one({'_id': ObjectId(offer_id)})
 
+# Shares an offer with another user
+def share(offer_id, email):
+    assert offer_id is not None, "no id given!"
+    
+    col.find_one_and_update({'_id': ObjectId(offer_id)},{ '$addToSet': {'shared_with': email}})
 
 if __name__ == '__main__':
     add_offer({
