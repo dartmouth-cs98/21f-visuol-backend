@@ -108,6 +108,15 @@ def remove_offer():
     controllers.remove_offer(request.json)
     return "offer removed"
 
+@app.route('/api_v1/share_offer', methods=['POST'])
+def share_offer():
+    auth_header = request.headers.get('Authorization')
+    auth_result = read_authorization(auth_header)
+    if (auth_result != None):
+        return auth_result
+    controllers.share_offer(request.json)
+    return "shared offer"
+
 def read_authorization(auth_header):
         # don't run middleware for login or register routes.
     if request.path == '/api_v1/login' or request.path == '/api_v1/register_user':
