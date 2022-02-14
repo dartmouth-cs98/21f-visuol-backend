@@ -89,6 +89,16 @@ def users_offers():
     user = request.environ['user']['email']
     return controllers.users_offers(user)
 
+@app.route('/api_v1/user', methods=['GET'])
+def user():
+    auth_header = request.headers.get('Authorization')
+    auth_result = read_authorization(auth_header)
+    if (auth_result != None):
+        return auth_result
+
+    user_email = request.environ['user']['email']
+    return controllers.user(user_email)
+
 # Allows users to edit an offer
 @app.route('/api_v1/edit_offer', methods=['PUT'])
 def edit_offer(offer_data):
