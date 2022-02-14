@@ -5,7 +5,7 @@ from numpy import string_
 
 from utils.hash_password import get_hashed_password, check_password
 from mongo.user_auth import add_user, get_user
-from mongo.offer import add_offer, get_offer, get_offers, update_offer, delete_offer, share
+from mongo.offer import add_offer, get_offer, get_offers, update_offer, delete_offer, share, shared_list
 from jwt import encode
 from time import time
 from constants import TOKEN_DURATION
@@ -228,4 +228,20 @@ def share_offer(offer_data):
     email = offer_data['email']
 
     share(offer_id, email)
+
+def get_shared(user):
+    assert user != None, "user needed"
+
+    shared = shared_list(user)
+
+    if shared is None:
+        return {
+            'status': 'failure',
+            'error': 'Could not find offers for user {}'.format(user)
+        }
+
+    for offer in shared:
+        offer['_id'] = str(offer['_id'])
+
+    return json.dumps(shared)
     
