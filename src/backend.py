@@ -127,6 +127,15 @@ def share_offer():
     controllers.share_offer(request.json)
     return "shared offer"
 
+@app.route('/api_v1/update_offer', methods=['POST'])
+def update_offer():
+    auth_header = request.headers.get('Authorization')
+    auth_result = read_authorization(auth_header)
+    if (auth_result != None):
+        return auth_result
+    controllers.update_offer(request.json)
+    return "updated offer"
+
 def read_authorization(auth_header):
         # don't run middleware for login or register routes.
     if request.path == '/api_v1/login' or request.path == '/api_v1/register_user':
