@@ -118,6 +118,7 @@ def remove_offer():
     controllers.remove_offer(request.json)
     return "offer removed"
 
+# share an offer with someone else
 @app.route('/api_v1/share_offer', methods=['POST'])
 def share_offer():
     auth_header = request.headers.get('Authorization')
@@ -129,12 +130,19 @@ def share_offer():
 
 @app.route('/api_v1/update_offer', methods=['POST'])
 def update_offer():
+    controllers.update_offer(request.json)
+    return "updated offer"
+    
+# get all the offers that are shared with you
+@app.route('/api_v1/get_shared', methods=['GET'])
+def get_shared():
     auth_header = request.headers.get('Authorization')
     auth_result = read_authorization(auth_header)
     if (auth_result != None):
         return auth_result
-    controllers.update_offer(request.json)
-    return "updated offer"
+    user = request.environ['user']['email']
+    response = controllers.get_shared(user)
+    return response
 
 def read_authorization(auth_header):
         # don't run middleware for login or register routes.

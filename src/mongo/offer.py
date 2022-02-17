@@ -43,6 +43,10 @@ def share(offer_id, email):
     assert offer_id is not None, "no id given!"
     
     col.find_one_and_update({'_id': ObjectId(offer_id)},{ '$addToSet': {'shared_with': email}})
+    
+# Gets a list of all the offers that have been shared with the user
+def shared_list(user):
+    return list(col.find({ 'shared_with': user }))
 
 def update(offer_id, base, bonus):
     assert offer_id is not None, "no id given!"
