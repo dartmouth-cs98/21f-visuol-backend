@@ -128,6 +128,11 @@ def share_offer():
     controllers.share_offer(request.json)
     return "shared offer"
 
+@app.route('/api_v1/update_offer', methods=['POST'])
+def update_offer():
+    controllers.update_offer(request.json)
+    return "updated offer"
+    
 # get all the offers that are shared with you
 @app.route('/api_v1/get_shared', methods=['GET'])
 def get_shared():

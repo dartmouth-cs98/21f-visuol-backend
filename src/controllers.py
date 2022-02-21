@@ -5,7 +5,11 @@ from numpy import string_
 
 from utils.hash_password import get_hashed_password, check_password
 from mongo.user_auth import add_user, get_user
+<<<<<<< HEAD
+from mongo.offer import add_offer, get_offer, get_offers, update_offer, delete_offer, share, update
+=======
 from mongo.offer import add_offer, get_offer, get_offers, update_offer, delete_offer, share, shared_list
+>>>>>>> main
 from jwt import encode
 from time import time
 from constants import TOKEN_DURATION
@@ -228,6 +232,14 @@ def share_offer(offer_data):
     email = offer_data['email']
 
     share(offer_id, email)
+    
+# method used to share an offer with another user
+def update_offer(offer_data):
+    offer_id = offer_data['id']
+    base = offer_data['base']
+    bonus = offer_data['bonus']
+
+    update(offer_id, base, bonus)
 
 def get_shared(user):
     assert user != None, "user needed"

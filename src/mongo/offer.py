@@ -48,6 +48,14 @@ def share(offer_id, email):
 def shared_list(user):
     return list(col.find({ 'shared_with': user }))
 
+def update(offer_id, base, bonus):
+    assert offer_id is not None, "no id given!"
+    
+    if(len(base)):
+        col.find_one_and_update({'_id': ObjectId(offer_id)},{ '$set': {'base': int(base)}})
+    if(len(bonus)):
+        col.find_one_and_update({'_id': ObjectId(offer_id)},{ '$set': {'bonus': int(bonus)}})
+
 if __name__ == '__main__':
     add_offer({
         "company": "Google",
