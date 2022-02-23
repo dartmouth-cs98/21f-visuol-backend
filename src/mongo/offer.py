@@ -1,7 +1,7 @@
 import os
 from dotenv import load_dotenv
 from bson import ObjectId
-from mongo.mongo_client import client
+from src.mongo.mongo_client import client
 
 # MongoDB connection setup from https://www.mongodb.com/blog/post/getting-started-with-python-and-mongodb
 db = client.VisuOL
