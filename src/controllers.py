@@ -5,11 +5,7 @@ from numpy import string_
 
 from utils.hash_password import get_hashed_password, check_password
 from mongo.user_auth import add_user, get_user
-<<<<<<< HEAD
-from mongo.offer import add_offer, get_offer, get_offers, update_offer, delete_offer, share, update
-=======
 from mongo.offer import add_offer, get_offer, get_offers, update_offer, delete_offer, share, shared_list
->>>>>>> main
 from jwt import encode
 from time import time
 from constants import TOKEN_DURATION
