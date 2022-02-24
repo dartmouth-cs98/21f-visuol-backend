@@ -3,16 +3,16 @@ import os
 
 from numpy import string_
 
-from utils.hash_password import get_hashed_password, check_password
-from mongo.user_auth import add_user, get_user
-from mongo.offer import add_offer, get_offer, get_offers, update_offer, delete_offer, share, shared_list
+from .utils.hash_password import get_hashed_password, check_password
+from .mongo.user_auth import add_user, get_user
+from .mongo.offer import add_offer, get_offer, get_offers, update_offer, delete_offer, share, shared_list
 from jwt import encode
 from time import time
-from constants import TOKEN_DURATION
+from .constants import TOKEN_DURATION
 from bson import json_util
 import json
-from state_tax import state_tax
-from federal_tax import fed_tax
+from .state_tax import state_tax
+from .federal_tax import fed_tax
 def register_user(user_data):
     assert 'email' in user_data, 'Could not find email in user!'
     assert 'password' in user_data, 'Could not find password in user!'
