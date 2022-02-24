@@ -1,6 +1,6 @@
 import os
 from dotenv import load_dotenv
-from mongo.mongo_client import client
+from .mongo_client import client
 
 load_dotenv()
 
