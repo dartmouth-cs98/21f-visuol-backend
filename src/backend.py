@@ -2,7 +2,7 @@
 # Within each of these routes, there should not be any computation occuring
 # Instead, we handle all data parsing and handling in the controllers file
 
-import src.controllers
+import src.controllers as controllers
 
 # Credit to https://pythonbasics.org/flask-tutorial-hello-world/ prints hello world
 from werkzeug.wrappers import Response
