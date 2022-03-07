@@ -1,6 +1,6 @@
 import pandas as pd
 
-from mongo.mongo_client import client
+from .mongo.mongo_client import client
 db = client.VisuOL
 col = db['state_tax_brackets']
 
