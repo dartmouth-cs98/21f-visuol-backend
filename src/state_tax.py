@@ -4,13 +4,15 @@ from mongo.mongo_client import client
 db = client.VisuOL
 col = db['state_tax_brackets']
 
+
+
 def state_tax(state, income, married):
     cols = col.find({"State": state})
     df2= pd.DataFrame(list(cols))
-    df2= df2.sort_values(by=['Single Bracket'])
-    remaining_income = 0
     if(len(df2) == 0):
         return 0
+    df2= df2.sort_values(by=['Single Bracket'])
+    remaining_income = 0
     if(married=='married'):
         for i in range(len(df2)):
             if(income > df2.iloc[i]['Married Bracket'] / 2):
