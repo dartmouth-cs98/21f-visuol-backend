@@ -13,6 +13,7 @@ from bson import json_util
 import json
 from src.state_tax import state_tax
 from src.federal_tax import fed_tax
+
 def register_user(user_data):
     assert 'email' in user_data, 'Could not find email in user!'
     assert 'password' in user_data, 'Could not find password in user!'
